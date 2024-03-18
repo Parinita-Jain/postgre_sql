@@ -1,0 +1,14 @@
+to use database--
+\c databasename;
+
+to see content of database--
+\dt
+
+desc in postgresql--
+\d tablename;
+
+To get all domains in the current database use the below command: 
+ 
+
+\dD
+

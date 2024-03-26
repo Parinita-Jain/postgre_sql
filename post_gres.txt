@@ -12,3 +12,162 @@ To get all domains in the current database use the below command:
 
 \dD
 
+
+Sure, let's illustrate each of the points with examples:
+
+Logical Organization:
+
+Suppose you're building an e-commerce application. You might organize your tables into separate schemas based on different aspects of the application, such as "products", "customers", and "orders". Each schema contains tables related to its respective area. For example:
+
+sql
+Copy code
+CREATE SCHEMA products;
+CREATE TABLE products.products (
+    product_id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    price NUMERIC
+);
+
+CREATE SCHEMA customers;
+CREATE TABLE customers.customers (
+    customer_id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100)
+);
+
+CREATE SCHEMA orders;
+CREATE TABLE orders.orders (
+    order_id SERIAL PRIMARY KEY,
+    customer_id INT,
+    total_amount NUMERIC
+);
+Avoid Naming Conflicts:
+
+You can have tables with the same name in different schemas without conflicts. For example:
+
+sql
+Copy code
+-- "products" schema
+CREATE TABLE products.products (
+    product_id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    price NUMERIC
+);
+
+-- "customers" schema
+CREATE TABLE customers.products (
+    product_id SERIAL PRIMARY KEY,
+    name VARCHAR(100),
+    customer_id INT
+);
+Here, we have a products table in both the products and customers schemas, and they are distinct from each other.
+
+Access Control:
+
+You can grant permissions at the schema level to control access to groups of tables. For example:
+
+sql
+Copy code
+-- Grant SELECT permission on the "customers" schema to a role
+GRANT SELECT ON SCHEMA customers TO some_role;
+
+-- Grant INSERT, UPDATE, DELETE permissions on the "orders" schema to another role
+GRANT INSERT, UPDATE, DELETE ON SCHEMA orders TO another_role;
+Database Maintenance:
+
+When performing maintenance tasks, having tables organized into separate schemas can simplify operations. For example, when backing up data, you can backup individual schemas separately:
+
+sql
+Copy code
+-- Backup the "products" schema
+pg_dump -h localhost -U username -d dbname -n products > products_backup.sql
+
+-- Backup the "customers" schema
+pg_dump -h localhost -U username -d dbname -n customers > customers_backup.sql
+Database Development:
+
+During development, each developer can work on different schemas independently. For example, one developer might be responsible for the "products" schema, while another works on the "customers" schema. This allows them to make changes and test their features without interfering with each other's work.
+
+These examples demonstrate how organizing tables into separate schemas in PostgreSQL can provide logical organization, avoid naming conflicts, control access, simplify maintenance, and facilitate collaboration during development.
+
+
+---
+
+
+If you're using the \dt command in psql to list tables, by default, it only shows tables in the public schema. To view tables in other schemas, you need to specify the schema name explicitly.
+
+Here's how you can list tables in a specific schema using \dt:
+
+sql
+Copy code
+\dt schema_name.*
+Replace schema_name with the name of the schema you want to list tables from. For example, if you have tables in a schema named sales, you would use:
+
+sql
+Copy code
+\dt sales.*
+This command will list all tables in the sales schema.
+
+If you want to list tables from all schemas, you can use the following command:
+
+sql
+Copy code
+\dt *.*
+
+When you create a schema in PostgreSQL, it is owned by the role that executes the CREATE SCHEMA command by default. However, using the AUTHORIZATION clause allows you to explicitly specify a different owner for the schema.
+So, when you execute CREATE SCHEMA AUTHORIZATION Raju;, you are creating a new schema named Raju and assigning ownership of the schema to the user or role named Raju.
+
+
+
+D:\postgreSQL_geeksforgeeks\suppliers>python --version
+Python 3.12.2
+
+D:\postgreSQL_geeksforgeeks\suppliers>python -m venv project_env
+
+D:\postgreSQL_geeksforgeeks\suppliers>where python
+C:\Users\hp\AppData\Local\Microsoft\WindowsApps\python.exe
+
+D:\postgreSQL_geeksforgeeks\suppliers>project_env\Scripts\activate
+
+(project_env) D:\postgreSQL_geeksforgeeks\suppliers>where python
+D:\postgreSQL_geeksforgeeks\suppliers\project_env\Scripts\python.exe
+C:\Users\hp\AppData\Local\Microsoft\WindowsApps\python.exe
+
+(project_env) D:\postgreSQL_geeksforgeeks\suppliers>pip list
+Package Version
+------- -------
+pip     24.0
+
+(project_env) D:\postgreSQL_geeksforgeeks\suppliers>pip freeze>requirements.txt
+
+(project_env) D:\postgreSQL_geeksforgeeks\suppliers>cat requirements.txt
+'cat' is not recognized as an internal or external command,
+operable program or batch file.
+
+(project_env) D:\postgreSQL_geeksforgeeks\suppliers>requirements.txt
+
+
+(project_env) D:\postgreSQL_geeksforgeeks\suppliers>pip install psycopg2
+Collecting psycopg2
+  Downloading psycopg2-2.9.9-cp312-cp312-win_amd64.whl.metadata (4.5 kB)
+Downloading psycopg2-2.9.9-cp312-cp312-win_amd64.whl (1.2 MB)
+   ---------------------------------------- 1.2/1.2 MB 4.6 MB/s eta 0:00:00
+Installing collected packages: psycopg2
+Successfully installed psycopg2-2.9.9
+
+(project_env) D:\postgreSQL_geeksforgeeks\suppliers>psql -U postgres
+'psql' is not recognized as an internal or external command,
+operable program or batch file.
+
+(project_env) D:\postgreSQL_geeksforgeeks\suppliers>notepad database.ini
+
+(project_env) D:\postgreSQL_geeksforgeeks\suppliers>notepad config.py
+
+(project_env) D:\postgreSQL_geeksforgeeks\suppliers>notepad connect.py
+
+
+
+
+
+
+
